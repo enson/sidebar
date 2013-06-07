@@ -33,6 +33,8 @@ KISSY.add(function (S, Node,Base,Mask) {
         init: function(){
             var that = this;
             that.id = that.get('id');
+            that.btnId = that.get('btnDiv');
+            that.sideId = that.get('side');
             that.zIndex = that.get('zIndex');
             that.duration = that.get('duration');
             that.className = that.get('className');
@@ -43,7 +45,11 @@ KISSY.add(function (S, Node,Base,Mask) {
             that.con.css({
                 display:'none'
             }).appendTo('body');
+            that.btn = S.one(that.btnId);
+            that.btn.css('position','absolute');
+            that.side = S.one(that.sideId);
             that.initMask();
+            this.bindEvt();
         },
 
         initMask: function(){
@@ -53,6 +59,13 @@ KISSY.add(function (S, Node,Base,Mask) {
                 fade:that.modalFade
             });
         },
+        //绑定按钮点击事件
+        bindEvt: function(){
+            var that = this;
+            that.btn.on('click',function(){
+                that.show(that.sideId);
+            })
+        },
         destroy:function(){
 
         },
@@ -60,6 +73,7 @@ KISSY.add(function (S, Node,Base,Mask) {
             var that = this;
             var width = container.width();
             var con = that.con;
+            var btn = that.btn;
             con.css({
                 display:'block',
                 width:width + 'px',
@@ -80,10 +94,16 @@ KISSY.add(function (S, Node,Base,Mask) {
                     container:container
                 });
             }).run();
+            //左上角按钮跟着sidebar一起滑动
+            S.Anim(btn,{
+                left: width + 'px'
+            },that.duration,'easeIn',function(){
+            }).run();
         },
         doAnimOut: function(){
             var that = this;
             var con = that.con;
+            var btn = that.btn;
             S.Anim(con,{
                 right:window.innerWidth + 'px'
             },that.duration,'none',function(){
@@ -96,6 +116,11 @@ KISSY.add(function (S, Node,Base,Mask) {
                 that.container.css({
                     display:'none'
                 });
+            }).run();
+
+            S.Anim(btn,{
+                left: 0+ 'px'
+            },that.duration,'none',function(){
             }).run();
         },
         hide: function(){
@@ -110,6 +135,10 @@ KISSY.add(function (S, Node,Base,Mask) {
             var that = this;
             var con = that.con;
             if(that.isShow()){
+                that.doAnimOut();
+                if(that.mask.masked()){
+                    that.mask.removeMask();
+                }
                 return;
             }
             if(S.isUndefined(container)){
@@ -172,7 +201,7 @@ KISSY.add(function (S, Node,Base,Mask) {
             value:''
         },
         modalOpacity: {
-            value: 0.6
+            value: 0.2
         },
         modalFade:{
             value: true

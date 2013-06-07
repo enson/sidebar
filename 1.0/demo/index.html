@@ -19,7 +19,7 @@
     }
     .my-test2 {
         display:none;
-        width:200px;
+        width:280px;
         background:green;
     }
     .my-test3 {
@@ -34,10 +34,9 @@
     }
 
 </style>
-<div class="my-test1"></div>
+
 <div class="my-test2"></div>
-<div class="my-test3"></div>
-<div class="my-test4"></div>
+
 
 <p>增加行数</p>
 <p>增加行数</p>
@@ -75,18 +74,17 @@
 <p>增加行数</p>
 
 <style>
-    #fixeddiv{
+    #showBox{
         position:fixed;
         z-index:9999;
         top:0;
-        right:0;
+        left:0;
         font-size:20px;
     }
 
 </style>
-<p id="fixeddiv">
-    <button id="showBox" class="btn btn-primary btn-large">显示</button>
-    <button id="hideBox" class="btn btn-primary btn-large">隐藏</button>
+<p id="btnDiv">
+    <button id="showBox" class="btn btn-primary btn-large">=</button>
 </p>
 
 <script>
@@ -119,14 +117,13 @@
     S.use('gallery/sidebar/1.0/index', function (S, Sidebar) {
          window.scrollTo(0 , 1);
          var sidebar = new Sidebar({
-             'className':'test'
+             'btnDiv':'#showBox',
+             'side':'.my-test2'
          });
-        S.one('#showBox').on('click',function(e){
-            sidebar.show('.my-test'+ (Math.floor(Math.random()*40 / 10) +1));
-        });
-        S.one('#hideBox').on('click',function(e){
-            sidebar.hide();
-        });
+        /*
+        S.one('#showBox').on('click',function(e){ //+ (Math.floor(Math.random()*40 / 10) +1)
+            sidebar.show('.my-test2');
+        });         */
     })
 </script>
 </body>
